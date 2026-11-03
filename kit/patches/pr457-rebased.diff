@@ -1,0 +1,19 @@
+diff --git a/csrc/xpu/grouped_gemm/xe_2/grouped_gemm_xe2.hpp b/csrc/xpu/grouped_gemm/xe_2/grouped_gemm_xe2.hpp
+index fd205f2..a952c01 100644
+--- a/csrc/xpu/grouped_gemm/xe_2/grouped_gemm_xe2.hpp
++++ b/csrc/xpu/grouped_gemm/xe_2/grouped_gemm_xe2.hpp
+@@ -216,11 +216,9 @@ CUTE_DEVICE void MoEGEMM(
+             mma);
+       }
+ 
+-      if (local_id == 0) {
+-        slm_mem[0] = cutlass::atomicAdd(atomic_buffer, 1);
+-      }
+-      sycl::group_barrier(item.get_group());
+-      group_id = group_range + slm_mem[0];
++      (void)atomic_buffer;
++      (void)slm_mem;
++      group_id += group_range;
+       group_m_id = (group_id * wg_tile_n) / gemm_n_pad;
+     }
+     pre_rows = cumsum_rows_for_experts;
